@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Styles from './WorkFlowGraph.module.css';
-
+import Styles from './styles/WorkFlow.module.css';
 import ReactFlow, {
   Background,
   Controls,
