@@ -1,4 +1,5 @@
 import React from 'react';
+import Styles from './WorkFlowGraph.module.css';
 
 type ClickHandler = React.MouseEventHandler<HTMLButtonElement>;
 function Button({
@@ -10,7 +11,11 @@ function Button({
 }) {
   return (
     <div>
-      <button onClick={handleClick}>{text}</button>
+      <button
+        onClick={handleClick}
+        className={Styles.button}>
+        {text}
+      </button>
     </div>
   );
 }

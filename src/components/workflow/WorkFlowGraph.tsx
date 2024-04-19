@@ -19,10 +19,11 @@ const WorkFlowGraph: React.FC = function () {
   const [error, setError] = useState<boolean>(false);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [elements, setElements] = useState<Node[]>([]);
+  const [selectedEdges, setSelectedEdges] = useState<string[]>([]);
 
   //
   const extractMenuItems = () => {
-    const regex = /^\d+\.\s.+/gm;
+    const regex = /^\d+\:\s.+/gm;
     const matches = text.match(regex);
 
     if (matches) {
@@ -43,9 +44,17 @@ const WorkFlowGraph: React.FC = function () {
     const newNode = {
       id: (Math.random() * 50).toString(),
       data: { label: `Node ${Math.round(Math.random() * 11)}` },
-      position: { x: Math.random() * 200, y: Math.random() * 200 },
+      position: { x: Math.random() * 300, y: Math.random() * 300 },
     };
     setElements((prevElements) => [...prevElements, newNode]);
+  };
+  const onConnect = (params: any) => {
+    const newEdge = {
+      id: `edge-${params.source}-${params.target}`,
+      source: params.source,
+      target: params.target,
+    };
+    setSelectedEdges((prevEdges) => [...prevEdges, newEdge.id]);
   };
 
   const deleteNode = (nodeId: any) => {
@@ -67,7 +76,7 @@ const WorkFlowGraph: React.FC = function () {
       const duplicatedNode: Node = {
         id: (Math.random() * 50).toString(),
         data: { label: 'duplicate' },
-        position: { x: Math.random() * 200, y: Math.random() * 200 },
+        position: { x: Math.random() * 100, y: Math.random() * 100 },
       };
       setElements((prevElements) => [...prevElements, duplicatedNode]);
     }
@@ -81,7 +90,7 @@ const WorkFlowGraph: React.FC = function () {
             <textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
-              style={{ width: '100%', height: '200px' }}></textarea>
+              className={Styles.textArea}></textarea>
             <button
               onClick={extractMenuItems}
               className={Styles.button}>
@@ -94,12 +103,15 @@ const WorkFlowGraph: React.FC = function () {
               <div className={Styles.error}>No valid menu items found</div>
             )}
             {extractedMenuItems.map((item, index) => (
-              <div key={index}>{item}</div>
+              <div key={index}>
+                <h2>Menu Item</h2>
+                {item}
+              </div>
             ))}
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div className={Styles.btnContainer}>
           <Button
             text='Add Node'
             handleClick={addNode}
@@ -121,7 +133,9 @@ const WorkFlowGraph: React.FC = function () {
             nodes={elements && elements.length === 0 ? initialNodes : elements}
             edges={initialEdges}
             fitView
-            onNodeClick={onNodeClick}>
+            onNodeClick={onNodeClick}
+            onConnect={onConnect}
+            nodesConnectable={true}>
             <Background />
             <Controls />
           </ReactFlow>

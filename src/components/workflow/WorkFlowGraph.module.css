@@ -1,6 +1,7 @@
 .container {
   display: flex;
   justify-content: space-around;
+  gap: 20px;
 }
 
 .leftPanel {
@@ -14,11 +15,15 @@
   width: 100%;
   height: 200px;
   margin-bottom: 10px;
+  border: 5px solid gray;
 }
 
 .button {
   padding: 5px 10px;
   cursor: pointer;
+  font-size: 20px;
+  color: greenyellow;
+  background-color: brown;
 }
 
 .centerPanel {
@@ -28,4 +33,11 @@
 
 .error {
   color: red;
+}
+.btnContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  justify-content: space-around;
 }
