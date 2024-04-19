@@ -18,7 +18,6 @@ const WorkFlowGraph: React.FC = function () {
   const [error, setError] = useState<boolean>(false);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [elements, setElements] = useState<Node[]>([]);
-  const [selectedEdges, setSelectedEdges] = useState<string[]>([]);
 
   //
   const extractMenuItems = () => {
@@ -46,14 +45,6 @@ const WorkFlowGraph: React.FC = function () {
       position: { x: Math.random() * 300, y: Math.random() * 300 },
     };
     setElements((prevElements) => [...prevElements, newNode]);
-  };
-  const onConnect = (params: any) => {
-    const newEdge = {
-      id: `edge-${params.source}-${params.target}`,
-      source: params.source,
-      target: params.target,
-    };
-    setSelectedEdges((prevEdges) => [...prevEdges, newEdge.id]);
   };
 
   const deleteNode = (nodeId: any) => {
@@ -133,7 +124,6 @@ const WorkFlowGraph: React.FC = function () {
             edges={initialEdges}
             fitView
             onNodeClick={onNodeClick}
-            onConnect={onConnect}
             nodesConnectable={true}>
             <Background />
             <Controls />
