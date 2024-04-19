@@ -5,8 +5,7 @@ import ReactFlow, {
   Background,
   Controls,
   ReactFlowProvider,
-  useNodesState,
-  useEdgesState,
+  NodeMouseHandler,
 } from 'react-flow-renderer';
 
 import { Node } from 'reactflow';
@@ -19,7 +18,7 @@ const WorkFlowGraph: React.FC = function () {
   const [text, setText] = useState('');
   const [extractedMenuItems, setExtractedMenuItems] = useState<string[]>([]);
   const [error, setError] = useState<boolean>(false);
-
+  const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [elements, setElements] = useState<Node[]>([]);
 
   //
@@ -37,15 +36,31 @@ const WorkFlowGraph: React.FC = function () {
     }
   };
 
-  // add nodes;
+  const onNodeClick = (event: React.MouseEvent, node: Node) => {
+    setSelectedNode(node.id);
+  };
+
   const addNode = () => {
     const newNode = {
-      id: (Math.random() * 10000).toString(),
-      type: 'default',
+      id: (Math.random() * 50).toString(),
       data: { label: 'New Node' },
-      position: { x: 0, y: 0 },
+      position: { x: Math.random() * 200, y: Math.random() * 200 },
     };
     setElements((prevElements) => [...prevElements, newNode]);
+  };
+
+  const deleteNode = (nodeId: any) => {
+    setElements((prevElements) =>
+      prevElements.filter((el) => el.id !== nodeId)
+    );
+
+    setSelectedNode(null);
+  };
+
+  const handleNodeDelete = () => {
+    if (selectedNode) {
+      deleteNode(selectedNode);
+    }
   };
 
   return (
@@ -74,35 +89,24 @@ const WorkFlowGraph: React.FC = function () {
           </div>
         </div>
 
-        {/* <div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <Button
+            text='Add Node'
+            handleClick={addNode}
+          />
 
-        <button onClick={addNode} className={styles.button}>
-              Add Node
-          <button className={Styles.button}>Add Node</button>
-          <button className={Styles.button}>Delete Node</button>
-          <button className={Styles.button}>Duplicate Node</button>
-        </div> */}
-
-        <Button
-          text='Add Node'
-          handleClick={addNode}
-        />
-
-        {/* <Button
-          text='Delete Node'
-          handleClick={deleteNode}
-        />
-
-        <Button
-          text='Duplicate Node'
-          handleClick={duplicateNode}
-        /> */}
+          <Button
+            text='delete Node'
+            handleClick={handleNodeDelete}
+          />
+        </div>
 
         <div className={Styles.centerPanel}>
           <ReactFlow
-            nodes={elements}
+            nodes={elements && elements.length === 0 ? initialNodes : elements}
             edges={initialEdges}
-            fitView>
+            fitView
+            onNodeClick={onNodeClick}>
             <Background />
             <Controls />
           </ReactFlow>

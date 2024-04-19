@@ -1,10 +1,11 @@
 import React from 'react';
 
+type ClickHandler = React.MouseEventHandler<HTMLButtonElement>;
 function Button({
   handleClick,
   text,
 }: {
-  handleClick: React.MouseEventHandler<HTMLButtonElement>;
+  handleClick: ClickHandler;
   text: string;
 }) {
   return (
