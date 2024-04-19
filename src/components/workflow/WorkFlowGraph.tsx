@@ -5,7 +5,6 @@ import ReactFlow, {
   Background,
   Controls,
   ReactFlowProvider,
-  NodeMouseHandler,
 } from 'react-flow-renderer';
 
 import { Node } from 'reactflow';
@@ -43,7 +42,7 @@ const WorkFlowGraph: React.FC = function () {
   const addNode = () => {
     const newNode = {
       id: (Math.random() * 50).toString(),
-      data: { label: 'New Node' },
+      data: { label: `Node ${Math.round(Math.random() * 11)}` },
       position: { x: Math.random() * 200, y: Math.random() * 200 },
     };
     setElements((prevElements) => [...prevElements, newNode]);
@@ -60,6 +59,17 @@ const WorkFlowGraph: React.FC = function () {
   const handleNodeDelete = () => {
     if (selectedNode) {
       deleteNode(selectedNode);
+    }
+  };
+
+  const duplicateNode = () => {
+    if (selectedNode) {
+      const duplicatedNode: Node = {
+        id: (Math.random() * 50).toString(),
+        data: { label: 'duplicate' },
+        position: { x: Math.random() * 200, y: Math.random() * 200 },
+      };
+      setElements((prevElements) => [...prevElements, duplicatedNode]);
     }
   };
 
@@ -98,6 +108,11 @@ const WorkFlowGraph: React.FC = function () {
           <Button
             text='delete Node'
             handleClick={handleNodeDelete}
+          />
+
+          <Button
+            text='Duplicate Node'
+            handleClick={duplicateNode}
           />
         </div>
 
