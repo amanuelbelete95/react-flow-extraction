@@ -9,13 +9,20 @@ import ReactFlow, {
   useEdgesState,
 } from 'react-flow-renderer';
 
+import { Node } from 'reactflow';
+
 import { initialEdges, initialNodes } from '../../type/type';
+import Button from './Button';
 
 const WorkFlowGraph: React.FC = function () {
   // function to extract the exact menu;
   const [text, setText] = useState('');
   const [extractedMenuItems, setExtractedMenuItems] = useState<string[]>([]);
   const [error, setError] = useState<boolean>(false);
+
+  const [elements, setElements] = useState<Node[]>([]);
+
+  //
   const extractMenuItems = () => {
     const regex = /^\d+\.\s.+/gm;
     const matches = text.match(regex);
@@ -28,6 +35,17 @@ const WorkFlowGraph: React.FC = function () {
       setExtractedMenuItems([]);
       setError(true);
     }
+  };
+
+  // add nodes;
+  const addNode = () => {
+    const newNode = {
+      id: (Math.random() * 10000).toString(),
+      type: 'default',
+      data: { label: 'New Node' },
+      position: { x: 0, y: 0 },
+    };
+    setElements((prevElements) => [...prevElements, newNode]);
   };
 
   return (
@@ -56,9 +74,33 @@ const WorkFlowGraph: React.FC = function () {
           </div>
         </div>
 
+        {/* <div>
+
+        <button onClick={addNode} className={styles.button}>
+              Add Node
+          <button className={Styles.button}>Add Node</button>
+          <button className={Styles.button}>Delete Node</button>
+          <button className={Styles.button}>Duplicate Node</button>
+        </div> */}
+
+        <Button
+          text='Add Node'
+          handleClick={addNode}
+        />
+
+        {/* <Button
+          text='Delete Node'
+          handleClick={deleteNode}
+        />
+
+        <Button
+          text='Duplicate Node'
+          handleClick={duplicateNode}
+        /> */}
+
         <div className={Styles.centerPanel}>
           <ReactFlow
-            nodes={initialNodes}
+            nodes={elements}
             edges={initialEdges}
             fitView>
             <Background />
