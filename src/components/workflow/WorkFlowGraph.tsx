@@ -1,42 +1,32 @@
-import ReactFlow, { ReactFlowProvider } from 'react-flow-renderer';
+import { useCallback } from 'react';
+import ReactFlow, {
+  Background,
+  Controls,
+  ReactFlowProvider,
+  useNodesState,
+  useEdgesState,
+} from 'react-flow-renderer';
 
-// import { Node } from 'reactflow';
-import { Node } from '../../type/type';
-
-const elements: Node[] = [
-  {
-    id: '1',
-
-    data: {
-      label: 'Node 1',
-    },
-
-    position: {
-      x: 100,
-      y: 100,
-    },
-  },
-
-  {
-    id: '2',
-
-    data: {
-      label: 'Node 2',
-    },
-
-    position: {
-      x: 200,
-      y: 200,
-    },
-  },
-];
+import { initialEdges, initialNodes } from '../../type/type';
 
 const WorkFlowGraph: React.FC = function () {
-  const flowStyle = { height: '500px', width: '500px' };
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
   return (
     <ReactFlowProvider>
-      <div style={flowStyle}>
-        <ReactFlow nodes={elements} />
+      <div style={{ height: '500px', width: '500px' }}>
+        <ReactFlow
+          nodes={initialNodes}
+          onNodesChange={onNodesChange}
+          edges={initialEdges}
+          onEdgesChange={onEdgesChange}
+          fitView>
+          <Background />
+
+          <Controls />
+        </ReactFlow>
       </div>
     </ReactFlowProvider>
   );
