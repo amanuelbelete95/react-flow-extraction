@@ -1,5 +1,5 @@
 import React from 'react';
-import Styles from '';
+import Styles from './styles/WorkFlow.module.css';
 
 type ClickHandler = React.MouseEventHandler<HTMLButtonElement>;
 function Button({
